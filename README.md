@@ -1,1 +1,1 @@
-Check out all the cool things I'm doing here: zackzimny.com
+Check out all the cool things I'm doing here: https://www.zackzimny.com
