@@ -1,5 +1,7 @@
 {
-    "name": "personal-website",
-    "compatibility_date": "2026-02-21",
-    "main": "scripts/index.js"
+  "name": "personal-website",
+  "compatibility_date": "2026-02-21",
+  "assets": {
+    "directory": "./public/"
+  }
 }
