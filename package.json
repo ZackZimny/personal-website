@@ -17,6 +17,7 @@
     "vite": "^8.0.0-beta.13"
   },
   "dependencies": {
-    "@cloudflare/vite-plugin": "^1.25.2"
+    "@cloudflare/vite-plugin": "^1.25.2",
+    "vite": "^8.0.0-beta.13"
   }
 }
