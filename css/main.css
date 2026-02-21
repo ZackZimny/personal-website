@@ -1,0 +1,65 @@
+@import "colors.css";
+
+body {
+  padding: 1rem;
+  font-family: "JetBrains Mono", monospace;
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+.main-container {
+  display: flex;
+  gap: 3rem;
+  justify-content: center;
+}
+
+.right-main-container {
+  display: flex;
+  justify-content: center;
+  background-color: var(--bg);
+  opacity: 90%;
+}
+
+.titlebar {
+  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-size: 20px;
+  background-color: var(--bg);
+}
+
+.name-titlebar {
+  display: flex;
+  gap: 8px;
+}
+
+.name-titlebar-left {
+  color: var(--blue);
+}
+
+.name-titlebar-right {
+  color: var(--magenta2);
+}
+
+.green2 {
+  color: var(--green2);
+}
+
+.title-links {
+  padding-top: 0px;
+  display: "flex";
+  gap: "5px";
+}
+
+.long-text {
+  margin: 0px;
+  max-width: 750px;
+  padding-bottom: 16px;
+}
+
+.activity-log-header-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}

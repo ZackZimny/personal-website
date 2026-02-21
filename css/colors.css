@@ -1,0 +1,50 @@
+/* Adopted from: https://github.com/folke/tokyonight.nvim/blob/main/lua/tokyonight/colors/moon.lua */
+:root {
+  /* Backgrounds */
+  --bg: #222436;
+  --bg-dark: #1e2030;
+  --bg-dark1: #191b29;
+  --bg-highlight: #2f334d;
+  /* Foreground / Text */
+  --fg: #c8d3f5;
+  --fg-dark: #828bb8;
+  --fg-gutter: #3b4261;
+  --comment: #636da6;
+  /* Blues */
+  --blue: #82aaff;
+  --blue0: #3e68d7;
+  --blue1: #65bcff;
+  --blue2: #0db9d7;
+  --blue5: #89ddff;
+  --blue6: #b4f9f8;
+  --blue7: #394b70;
+  /* Greens & Teals */
+  --green: #c3e88d;
+  --green1: #4fd6be;
+  --green2: #41a6b5;
+  --teal: #4fd6be;
+  /* Magentas & Purples */
+  --magenta: #c099ff;
+  --magenta2: #ff007c;
+  --purple: #fca7ea;
+  /* Accents */
+  --orange: #ff966c;
+  --yellow: #ffc777;
+  --red: #ff757f;
+  --red1: #c53b53;
+  /* UI/Dark Tones */
+  --dark3: #545c7e;
+  --dark5: #737aa2;
+  --terminal-black: #444a73;
+  /* Git */
+  --git-add: #b8db87;
+  --git-change: #7ca1f2;
+  --git-delete: #e26a75;
+
+  /* Misc */
+  --tamu-maroon: #700000;
+}
+
+.tamu-maroon {
+  color: var(--tamu-maroon);
+}
