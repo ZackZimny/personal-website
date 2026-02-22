@@ -1,6 +1,7 @@
 import { getRecentTrack, type SpotifyEnv } from "./spotify.ts";
+import { getRecentActivity, type StravaEnv } from "./strava.ts";
 
-interface Env extends SpotifyEnv {
+interface Env extends SpotifyEnv, StravaEnv {
   ASSETS?: {
     fetch: typeof fetch;
   };
@@ -20,8 +21,37 @@ export default {
             headers: { "Content-Type": "application/json" },
           });
         }
+        
         return new Response(JSON.stringify(track), {
+          headers: { 
+            "Content-Type": "application/json",
+            "Cache-Control": "no-cache, no-store, must-revalidate" 
+          },
+        });
+      } catch (error: any) {
+        return new Response(JSON.stringify({ error: error.message }), {
+          status: 500,
           headers: { "Content-Type": "application/json" },
+        });
+      }
+    }
+
+    // Handle Strava API route
+    if (url.pathname === "/strava/recent") {
+      try {
+        const activity = await getRecentActivity(env);
+        if (!activity) {
+          return new Response(JSON.stringify({ error: "No recent activities found" }), {
+            status: 404,
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+
+        return new Response(JSON.stringify(activity), {
+          headers: { 
+            "Content-Type": "application/json",
+            "Cache-Control": "no-cache, no-store, must-revalidate" 
+          },
         });
       } catch (error: any) {
         return new Response(JSON.stringify({ error: error.message }), {
