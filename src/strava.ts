@@ -29,7 +29,6 @@ async function getAccessToken(env: StravaEnv) {
   params.append("client_secret", clientSecret);
   params.append("grant_type", "refresh_token");
   params.append("refresh_token", refreshToken);
-
   const response = await fetch("https://www.strava.com/oauth/token", {
     method: "POST",
     body: params,
@@ -47,7 +46,6 @@ async function getAccessToken(env: StravaEnv) {
 
 export async function getRecentActivity(env: StravaEnv): Promise<StravaActivity | null> {
   const accessToken = await getAccessToken(env);
-  // Fetch more to ensure we find a run with GPS data
   const response = await fetch(
     "https://www.strava.com/api/v3/athlete/activities?per_page=10",
     {
@@ -68,7 +66,7 @@ export async function getRecentActivity(env: StravaEnv): Promise<StravaActivity 
 
   // Find the most recent "Run" that has map data
   let activity = data.find((a: any) => a.type === "Run" && a.map?.summary_polyline);
-  
+
   // If no run found, find ANY activity with map data
   if (!activity) {
     activity = data.find((a: any) => a.map?.summary_polyline);

@@ -97,7 +97,7 @@ function generateSvgPath(points: [number, number][]): string {
   const width = maxLng - minLng;
   const height = maxLat - minLat;
   const maxDim = Math.max(width, height);
-  
+
   const viewBoxSize = 100;
   const padding = 10;
   const scale = (viewBoxSize - 2 * padding) / (maxDim || 1);
@@ -119,7 +119,6 @@ async function fetchRecentRun() {
     }
 
     const activity: StravaActivity = await response.json();
-    console.log("Strava Activity Received:", activity);
     const miles = activity.distance / 1609.344;
     const paceSecondsPerMile = activity.moving_time / miles;
     const paceMinutes = Math.floor(paceSecondsPerMile / 60);
@@ -154,7 +153,7 @@ async function fetchRecentRun() {
             <a href="https://www.strava.com/activities/${activity.id}" target="_blank">${activity.name}</a>
           </span>
           <span class="activity-stats">${formattedDistance} • ${formattedPace} • ${activity.type}</span>
-          <span class="activity-date">${startDate}</span>
+          <span class="activity-date">Activity Date: ${startDate}</span>
         </div>
         <div class="most-recent-label strava-label">Most recent run</div>
       </div>
