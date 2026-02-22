@@ -153,7 +153,7 @@ async function fetchRecentRun() {
             <a href="https://www.strava.com/activities/${activity.id}" target="_blank">${activity.name}</a>
           </span>
           <span class="activity-stats">${formattedDistance} • ${formattedPace} • ${activity.type}</span>
-          <span class="activity-date">Activity Date: ${startDate}</span>
+          <span class="activity-date">Activity date: ${startDate}</span>
         </div>
         <div class="most-recent-label strava-label">Most recent run</div>
       </div>

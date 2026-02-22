@@ -10,9 +10,13 @@ interface Env extends SpotifyEnv, StravaEnv {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+    const cache = (caches as any).default;
 
     // Handle Spotify API route
     if (url.pathname === "/spotify/recent") {
+      const cacheMatch = await cache?.match(request);
+      if (cacheMatch) return cacheMatch;
+
       try {
         const track = await getRecentTrack(env);
         if (!track) {
@@ -22,12 +26,15 @@ export default {
           });
         }
         
-        return new Response(JSON.stringify(track), {
+        const response = new Response(JSON.stringify(track), {
           headers: { 
             "Content-Type": "application/json",
-            "Cache-Control": "no-cache, no-store, must-revalidate" 
+            "Cache-Control": "public, s-maxage=3600" 
           },
         });
+
+        if (cache) await cache.put(request, response.clone());
+        return response;
       } catch (error: any) {
         return new Response(JSON.stringify({ error: error.message }), {
           status: 500,
@@ -38,6 +45,9 @@ export default {
 
     // Handle Strava API route
     if (url.pathname === "/strava/recent") {
+      const cacheMatch = await cache?.match(request);
+      if (cacheMatch) return cacheMatch;
+
       try {
         const activity = await getRecentActivity(env);
         if (!activity) {
@@ -47,12 +57,15 @@ export default {
           });
         }
 
-        return new Response(JSON.stringify(activity), {
+        const response = new Response(JSON.stringify(activity), {
           headers: { 
             "Content-Type": "application/json",
-            "Cache-Control": "no-cache, no-store, must-revalidate" 
+            "Cache-Control": "public, s-maxage=3600" 
           },
         });
+
+        if (cache) await cache.put(request, response.clone());
+        return response;
       } catch (error: any) {
         return new Response(JSON.stringify({ error: error.message }), {
           status: 500,
