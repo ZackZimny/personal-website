@@ -78,20 +78,28 @@ export default {
         if (!track) {
           return new Response(JSON.stringify({ error: "No recent tracks found" }), {
             status: 404,
-            headers: { "Content-Type": "application/json" },
+            headers: { 
+              "Content-Type": "application/json",
+              "Cache-Control": "no-cache, no-store, must-revalidate"
+            },
           });
         }
         
         return new Response(JSON.stringify(track), {
           headers: { 
             "Content-Type": "application/json",
-            "Cache-Control": "no-cache, no-store, must-revalidate" 
+            "Cache-Control": "no-cache, no-store, must-revalidate, proxy-revalidate",
+            "Pragma": "no-cache",
+            "Expires": "0"
           },
         });
       } catch (error: any) {
         return new Response(JSON.stringify({ error: error.message }), {
           status: 500,
-          headers: { "Content-Type": "application/json" },
+          headers: { 
+            "Content-Type": "application/json",
+            "Cache-Control": "no-cache, no-store, must-revalidate"
+          },
         });
       }
     }

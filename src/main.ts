@@ -11,7 +11,8 @@ async function fetchRecentSong() {
   if (!container) return;
 
   try {
-    const response = await fetch("/spotify/recent");
+    // Cache-buster to ensure we get fresh data from the Worker
+    const response = await fetch("/spotify/recent?_=" + Date.now());
     if (!response.ok) {
       throw new Error(`Failed to fetch recent song: ${response.statusText}`);
     }
