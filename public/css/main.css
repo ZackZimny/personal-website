@@ -42,15 +42,12 @@ body {
   color: var(--magenta2);
 }
 
-.green2 {
-  color: var(--green2);
-  font-size: 16px;
-}
-
-.title-links {
+.title-link {
   padding-top: 0px;
   display: "flex";
   gap: "5px";
+  color: var(--green2);
+  font-size: 16px;
 }
 
 .long-text {
