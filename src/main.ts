@@ -34,6 +34,7 @@ async function fetchRecentSong() {
           <span class="artist-name">${artistsHtml}</span>
           <span class="played-at">Last played: ${playedAt}</span>
         </div>
+        <div class="most-recent-label">Most recent song</div>
       </div>
     `;
   } catch (error) {

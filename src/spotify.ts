@@ -13,13 +13,20 @@ export interface SpotifyTrack {
 }
 
 async function getAccessToken(env: SpotifyEnv) {
+  const clientID = env.SPOTIFY_CLIENT_ID?.trim().replace(/^"|"$/g, "");
+  const clientSecret = env.SPOTIFY_CLIENT_SECRET?.trim().replace(/^"|"$/g, "");
+  const refreshToken = env.SPOTIFY_REFRESH_TOKEN?.trim().replace(/^"|"$/g, "");
+
+  if (!clientID || !clientSecret || !refreshToken) {
+    throw new Error("Missing Spotify credentials in environment");
+  }
+
   const params = new URLSearchParams();
   params.append("grant_type", "refresh_token");
-  params.append("refresh_token", env.SPOTIFY_REFRESH_TOKEN);
+  params.append("refresh_token", refreshToken);
 
-  const auth = btoa(`${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`);
+  const auth = btoa(`${clientID}:${clientSecret}`);
   
-  console.log("DEBUG: Refreshing token...");
   const response = await fetch("https://accounts.spotify.com/api/token", {
     method: "POST",
     headers: {
