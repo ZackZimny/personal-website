@@ -26,7 +26,7 @@ async function getAccessToken(env: SpotifyEnv) {
   params.append("refresh_token", refreshToken);
 
   const auth = btoa(`${clientID}:${clientSecret}`);
-  
+
   const response = await fetch("https://accounts.spotify.com/api/token", {
     method: "POST",
     headers: {
