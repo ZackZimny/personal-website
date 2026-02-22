@@ -48,13 +48,19 @@ async function getAccessToken(env: SpotifyEnv) {
 
 export async function getRecentTrack(env: SpotifyEnv): Promise<SpotifyTrack | null> {
   const accessToken = await getAccessToken(env);
+  
   const response = await fetch(
     "https://api.spotify.com/v1/me/player/recently-played?limit=1",
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
-    }
+      // Ensure the worker doesn't cache this request
+      cf: {
+        cacheTtl: 0,
+        cacheEverything: false,
+      },
+    } as any
   );
 
   if (!response.ok) {
