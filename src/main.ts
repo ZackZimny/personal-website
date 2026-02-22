@@ -96,11 +96,11 @@ function generateSvgPath(points: [number, number][]): string {
 
   const width = maxLng - minLng;
   const height = maxLat - minLat;
-  const maxDim = Math.max(width, height);
-
+  const maxDim = Math.max(width, height, 0.0001); // Minimum dimension to prevent division by zero or invisible paths
+  
   const viewBoxSize = 100;
   const padding = 10;
-  const scale = (viewBoxSize - 2 * padding) / (maxDim || 1);
+  const scale = (viewBoxSize - 2 * padding) / maxDim;
 
   const getX = (lng: number) => padding + (lng - minLng) * scale + (maxDim - width) * scale / 2;
   const getY = (lat: number) => viewBoxSize - (padding + (lat - minLat) * scale + (maxDim - height) * scale / 2);

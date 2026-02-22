@@ -1,7 +1,13 @@
 {
-  "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "personal-website",
-  // Set this to today's date
-  "compatibility_date": "2026-02-21",
-  "main": "./src/index.ts"
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "personal-website",
+	// Set this to today's date
+	"compatibility_date": "2026-02-21",
+	"main": "./src/index.ts",
+	"kv_namespaces": [
+		{
+			"binding": "CHAT_STORAGE",
+			"id": "369a2b21454945adb1807d9959397144"
+		}
+	]
 }

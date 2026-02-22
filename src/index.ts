@@ -2,9 +2,25 @@ import { getRecentTrack, type SpotifyEnv } from "./spotify.ts";
 import { getRecentActivity, type StravaEnv } from "./strava.ts";
 
 interface Env extends SpotifyEnv, StravaEnv {
+  CHAT_STORAGE: any; // Using any to avoid KVNamespace type error for now, or you can use @cloudflare/workers-types
   ASSETS?: {
     fetch: typeof fetch;
   };
+}
+
+interface ChatMessage {
+  name: string;
+  message: string;
+  timestamp: number;
+}
+
+function sanitize(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 export default {
@@ -12,11 +28,51 @@ export default {
     const url = new URL(request.url);
     const cache = (caches as any).default;
 
+    // Handle Chat API route
+    if (url.pathname === "/api/chat") {
+      if (request.method === "GET") {
+        const messages = await env.CHAT_STORAGE.get("messages", { type: "json" }) as ChatMessage[] || [];
+        return new Response(JSON.stringify(messages), {
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+
+      if (request.method === "POST") {
+        try {
+          const body: any = await request.json();
+          const name = body.name.trim();
+          const message = body.message.trim();
+
+          if (!name || !message) {
+            return new Response("Invalid request", { status: 400 });
+          }
+
+          const newMessage: ChatMessage = {
+            name: sanitize(name.substring(0, 50)),
+            message: sanitize(message.substring(0, 500)),
+            timestamp: Date.now(),
+          };
+
+          const messages = await env.CHAT_STORAGE.get("messages", { type: "json" }) as ChatMessage[] || [];
+          messages.unshift(newMessage);
+          
+          // Keep only the last 50 messages
+          if (messages.length > 50) {
+            messages.pop();
+          }
+
+          await env.CHAT_STORAGE.put("messages", JSON.stringify(messages));
+          return new Response(JSON.stringify(newMessage), {
+            headers: { "Content-Type": "application/json" },
+          });
+        } catch (e) {
+          return new Response("Error processing request", { status: 500 });
+        }
+      }
+    }
+
     // Handle Spotify API route
     if (url.pathname === "/spotify/recent") {
-      const cacheMatch = await cache?.match(request);
-      if (cacheMatch) return cacheMatch;
-
       try {
         const track = await getRecentTrack(env);
         if (!track) {
@@ -26,15 +82,12 @@ export default {
           });
         }
         
-        const response = new Response(JSON.stringify(track), {
+        return new Response(JSON.stringify(track), {
           headers: { 
             "Content-Type": "application/json",
-            "Cache-Control": "public, s-maxage=3600" 
+            "Cache-Control": "no-cache, no-store, must-revalidate" 
           },
         });
-
-        if (cache) await cache.put(request, response.clone());
-        return response;
       } catch (error: any) {
         return new Response(JSON.stringify({ error: error.message }), {
           status: 500,
@@ -102,3 +155,4 @@ export default {
     return new Response("Not Found", { status: 404 });
   },
 };
+
