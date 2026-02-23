@@ -98,7 +98,7 @@ function generateSvgPath(points: [number, number][]): string {
   const width = maxLng - minLng;
   const height = maxLat - minLat;
   const maxDim = Math.max(width, height, 0.0001); // Minimum dimension to prevent division by zero or invisible paths
-  
+
   const viewBoxSize = 100;
   const padding = 10;
   const scale = (viewBoxSize - 2 * padding) / maxDim;
@@ -151,7 +151,7 @@ async function fetchRecentRun() {
         </div>
         <div class="strava-info">
           <span class="activity-name">
-            <a href="https://www.strava.com/activities/${activity.id}" target="_blank">${activity.name}</a>
+            <a target="_blank">${activity.name}</a>
           </span>
           <span class="activity-stats">${formattedDistance} • ${formattedPace} • ${activity.type}</span>
           <span class="activity-date">Activity date: ${startDate}</span>
