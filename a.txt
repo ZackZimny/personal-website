@@ -1,0 +1,6 @@
+curl -X POST https://accounts.spotify.com/api/token \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -u "CLIENT_ID:f9dfaf7e08d0e38ffb49b669da9c4afe690a9d89" \
+  -d "grant_type=authorization_code" \
+  -d "code=CODE" \
+  -d "redirect_uri=http://localhost:3000/callback"

@@ -30,11 +30,31 @@
         <a href="/chat.html" class="title-link">Chat</a>
       </div>
       <div class="right-main-container">
-        <div style="max-width: 750px; width: 100%;">
+        <div style="max-width: 750px; width: 100%">
           <h1>Music</h1>
-          <p>This section is currently under construction. Check back soon!</p>
+          <div class="kanm-player">
+            <button id="kanm-play-button" class="play-button">
+              <span class="play-icon">▶</span>
+              <span class="play-text">Play</span>
+            </button>
+            <div class="kanm-info">
+              <a href="https://kanm.org" class="kanm-title">KANM Student Radio</span>
+              <span class="kanm-description">Live from Texas A&M</span>
+            </div>
+            <audio id="kanm-audio">
+              <source src="https://icecast.kanm.org/listen" type="audio/mpeg" />
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+          <p>
+            Listen to my friends at
+            <a href="https://kanm.org" target="_blank">KANM</a>, the college
+            station of <span style="color: var(--tamu-maroon)">College Station</span>.
+          </p>
+
         </div>
       </div>
     </div>
+    <script type="module" src="/src/music.ts"></script>
   </body>
 </html>

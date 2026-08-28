@@ -48,7 +48,7 @@ async function getAccessToken(env: SpotifyEnv) {
 
 export async function getRecentTrack(env: SpotifyEnv): Promise<SpotifyTrack | null> {
   const accessToken = await getAccessToken(env);
-  
+
   const response = await fetch(
     "https://api.spotify.com/v1/me/player/recently-played?limit=1",
     {

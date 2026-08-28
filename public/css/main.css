@@ -381,3 +381,103 @@ a {
   color: var(--fg);
   opacity: 0.6;
 }
+
+.kanm-player {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--fg);
+  margin-top: 1rem;
+}
+
+.kanm-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.kanm-title {
+  font-weight: bold;
+  color: var(--blue);
+}
+
+.kanm-description {
+  font-size: 14px;
+  color: var(--fg-dark);
+}
+
+.play-button {
+  background: transparent;
+  border: 1px solid var(--blue);
+  color: var(--blue);
+  font-family: "JetBrains Mono", monospace;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  min-width: 100px;
+  justify-content: center;
+}
+
+.play-button:hover {
+  background-color: var(--blue);
+  color: var(--bg);
+}
+
+.play-button:active {
+  transform: translateY(1px);
+}
+
+.play-icon {
+  font-size: 1.2rem;
+}
+
+.play-button.playing {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.play-button.playing:hover {
+  background-color: var(--green);
+  color: var(--bg);
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.kanm-player.playing .kanm-title::after {
+  content: " • LIVE";
+  font-size: 10px;
+  vertical-align: middle;
+  color: var(--red);
+  animation: pulse 1.5s infinite;
+  margin-left: 8px;
+}
+
+.full-width-center-parent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.blog-container {
+  max-width: 800px;
+
+  #p {
+    font-size: 18px;
+  }
+}
