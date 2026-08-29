@@ -12,6 +12,16 @@ export interface SpotifyTrack {
   played_at: string;
 }
 
+export const generateRandomString = (length: number = 16): string => {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const array = new Uint8Array(length);
+
+  // Populates array with cryptographically secure random numbers
+  crypto.getRandomValues(array);
+
+  return Array.from(array, (byte) => chars[byte % chars.length]).join('');
+};
+
 async function getAccessToken(env: SpotifyEnv) {
   const clientID = env.SPOTIFY_CLIENT_ID?.trim().replace(/^"|"$/g, "");
   const clientSecret = env.SPOTIFY_CLIENT_SECRET?.trim().replace(/^"|"$/g, "");
