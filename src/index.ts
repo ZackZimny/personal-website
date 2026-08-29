@@ -1,7 +1,6 @@
 import { getRecentTrack, type SpotifyEnv } from "./spotify.ts";
-import { getRecentActivity, type StravaEnv } from "./strava.ts";
 
-interface Env extends SpotifyEnv, StravaEnv {
+interface Env extends SpotifyEnv {
   CHAT_STORAGE: any; // Using any to avoid KVNamespace type error for now, or you can use @cloudflare/workers-types
   ASSETS?: {
     fetch: typeof fetch;
@@ -26,7 +25,6 @@ function sanitize(str: string): string {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
-    const cache = (caches as any).default;
 
     // Handle Chat API route
     if (url.pathname === "/api/chat") {
@@ -55,7 +53,7 @@ export default {
 
           const messages = await env.CHAT_STORAGE.get("messages", { type: "json" }) as ChatMessage[] || [];
           messages.unshift(newMessage);
-          
+
           // Keep only the last 50 messages
           if (messages.length > 50) {
             messages.pop();
@@ -78,15 +76,15 @@ export default {
         if (!track) {
           return new Response(JSON.stringify({ error: "No recent tracks found" }), {
             status: 404,
-            headers: { 
+            headers: {
               "Content-Type": "application/json",
               "Cache-Control": "no-cache, no-store, must-revalidate"
             },
           });
         }
-        
+
         return new Response(JSON.stringify(track), {
-          headers: { 
+          headers: {
             "Content-Type": "application/json",
             "Cache-Control": "no-cache, no-store, must-revalidate, proxy-revalidate",
             "Pragma": "no-cache",
@@ -96,41 +94,10 @@ export default {
       } catch (error: any) {
         return new Response(JSON.stringify({ error: error.message }), {
           status: 500,
-          headers: { 
+          headers: {
             "Content-Type": "application/json",
             "Cache-Control": "no-cache, no-store, must-revalidate"
           },
-        });
-      }
-    }
-
-    // Handle Strava API route
-    if (url.pathname === "/strava/recent") {
-      const cacheMatch = await cache?.match(request);
-      if (cacheMatch) return cacheMatch;
-
-      try {
-        const activity = await getRecentActivity(env);
-        if (!activity) {
-          return new Response(JSON.stringify({ error: "No recent activities found" }), {
-            status: 404,
-            headers: { "Content-Type": "application/json" },
-          });
-        }
-
-        const response = new Response(JSON.stringify(activity), {
-          headers: { 
-            "Content-Type": "application/json",
-            "Cache-Control": "public, s-maxage=3600" 
-          },
-        });
-
-        if (cache) await cache.put(request, response.clone());
-        return response;
-      } catch (error: any) {
-        return new Response(JSON.stringify({ error: error.message }), {
-          status: 500,
-          headers: { "Content-Type": "application/json" },
         });
       }
     }
